@@ -1,0 +1,25 @@
+server:
+  port: 8079
+
+spring:
+  application:
+    name: apigateway
+
+zuul:
+  routes:
+    common:
+      path: /props/**
+      url: http://common:8090/props
+    one:
+      path: /triggerMetric/**
+      url: http://one:8086/triggerMetric
+    two:
+      path: /triggerController2Metric/**
+      url: http://two:8085/triggerController2Metric
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://discovery:8761/eureka
