@@ -1,0 +1,12 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: two
+
+logging:
+  level:
+    com:
+      netflix:
+        servo: DEBUG

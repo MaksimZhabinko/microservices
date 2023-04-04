@@ -1,0 +1,61 @@
+services:
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+
+  graphite:
+    image: graphiteapp/graphite-statsd
+    ports:
+      - "2003:2003"
+
+  discovery:
+    build: ./platform-services/discovery
+    container_name: discovery
+    hostname: discovery
+    ports:
+      - "8761:8761"
+
+  apigateway:
+    build: ./platform-services/apigateway
+    container_name: apigateway
+    hostname: apigateway
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8079:8079"
+    depends_on:
+      - discovery
+
+  common:
+    build: ./business-services/common
+    container_name: common
+    hostname: common
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8090:8090"
+    depends_on:
+      - discovery
+
+  one:
+    build: ./business-services/one
+    container_name: one
+    hostname: one
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8086:8086"
+    depends_on:
+      - discovery
+
+  two:
+    build: ./business-services/two
+    container_name: two
+    hostname: two
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8085:8085"
+    depends_on:
+      - discovery
